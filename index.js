@@ -1,5 +1,87 @@
 /* Your Code Here */
 
+
+ const createEmployeeRecord = (array) => {
+  return {
+    firstName: array[0],
+    familyName: array[1],
+    title: array[2],
+    payPerHour: array[3],
+    timeInEvents: [],
+    timeOutEvents: [],
+  }
+
+}
+
+const createEmployeeRecords = (employeeRecords) => {
+  return employeeRecords.map(arrayEmp => {
+    return createEmployeeRecord(arrayEmp)
+  })
+}
+
+const timeCalc = (dateTime) => {
+  return parseInt(dateTime.match(/\d{4}$/)[0])
+} 
+
+const dateCalc = (dateTime) => {
+  return dateTime.match(/\d{4}-\d{2}-\d{2}/)[0]
+}
+
+
+function createTimeInEvent(dateStamp){
+   
+  const [date, hour] = dateStamp.split(' ')
+
+  this.timeInEvents.push({
+      type: "TimeIn",
+      hour: parseInt(hour, 10),
+      date,
+  })
+
+  return this
+}
+
+
+function createTimeOutEvent(dateStamp){
+   
+  const [date, hour] = dateStamp.split(' ')
+
+  this.timeOutEvents.push({
+      type: "TimeOut",
+      hour: parseInt(hour, 10),
+      date,
+  })
+
+  return this
+}
+
+
+
+function hoursWorkedOnDate(dateObj){
+  const timeIn = this.timeInEvents.find( timeInEvent => timeInEvent.date === dateObj)
+  const timeOut = this.timeOutEvents.find( timeOutEvent => timeOutEvent.date === dateObj)
+  const hoursWorked = (timeOut.hour - timeIn.hour) / 100;
+  return hoursWorked
+}
+
+function wagesEarnedOnDate(date){
+  const hoursWorked = hoursWorkedOnDate.call(this, date);
+  return hoursWorked * this.payPerHour
+}
+const findEmployeeByFirstName = (employees, firstName) => {
+  return employees.find(employee => employee.firstName === firstName)
+}
+
+
+
+const calculatePayroll = (employeeRecord) => {
+  return employeeRecord.reduce((total, employee) => {
+    return total + allWagesFor.call(employee)
+  }, 0)
+
+}
+
+
 /*
  We're giving you this function. Take a look at it, you might see some usage
  that's new and different. That's because we're avoiding a well-known, but
@@ -8,90 +90,15 @@
  As a result, the lessons for this function will pass *and* it will be available
  for you to use if you need it!
  */
- let createEmployeeRecord = (array) => {
-    return {
-      firstName: array[0],
-      familyName: array[1],
-      title:array[2],
-      payPerHour:array[3],
-      timeInEvents: [],
-      timeOutEvents: []
-    }
-  }
- const createEmployeeRecords = (arrays) => {
-    
-    return arrays.map(array => {
-        return createEmployeeRecord(array)
-    })
-
-}
-let createTimeInEvent = (employeeRecord, dateStamp) => {
-    const [date, hour] = dateStamp.split(" ")
-    employeeRecord.timeInEvents.push({
-      type: "TimeIn",
-      hour: parseInt(hour, 10),
-      date,
-  
-    })
-    return employeeRecord
-  }
-  const createTimeOutEvent = (employeeRecord, dateStamp) => {
-    const [date, hour] = dateStamp.split(" ")
-    employeeRecord.timeOutEvents.push({
-      type: "TimeOut",
-      hour: parseInt(hour, 10),
-      date,
-  
-  
-    })
-    return employeeRecord
-  }
-
-
-  const hoursWorkedOnDate = (employeeRecord, dateStamp) => {
-    const timeIn = employeeRecord.timeInEvents.find((event) => {
-      return event.date === dateStamp
-  
-    })
-  
-    const timeOut = employeeRecord.timeOutEvents.find((event) => {
-      return event.date === dateStamp
-    })
-  
-    const timeWorked = (timeOut.hour - timeIn.hour) / 100
-    return timeWorked
-    
-  }
-
-  const wagesEarnedOnDate = (employeeRecord, dateStamp) => {
-    const Earned = hoursWorkedOnDate (employeeRecord, dateStamp)
-    const Wage = Earned * employeeRecord.payPerHour
-    return parseInt(currentWage)
-  
-  }
-  
-
 
 const allWagesFor = function () {
-    const eligibleDates = this.timeInEvents.map(function (e) {
-        return e.date
-    })
+  const eligibleDates = this.timeInEvents.map(function (e) {
+      return e.date
+  })
 
-    const payable = eligibleDates.reduce(function (memo, d) {
-        return memo + wagesEarnedOnDate.call(this, d)
-    }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
+  const payable = eligibleDates.reduce(function (memo, d) {
+      return memo + wagesEarnedOnDate.call(this, d)
+  }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
 
-    return payable
-
+  return payable
 }
-
-const calculatePayroll = (employeeArray) => {
-    return employeeArray.reduce((total, record) => {
-      return total + allWagesFor(record)
-    }, 0)
-  
-  }
-
-
-
-
